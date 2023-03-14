@@ -35,13 +35,6 @@ RUN apt-get update && \
 RUN Rscript -e "install.packages(c('devtools', 'dplyr'))"
 RUN Rscript -e "devtools::install_github("morrowcj/remotePARTS")"
 
-# RUN R -e "install.packages(c('devtools','testthat', 'roxygen2'), dependencies=TRUE, repos='https://cran.rstudio.com')" && \
-#RUN R -e 'install.packages("devtools", dependencies=TRUE, repos="http://cran.rstudio.com/")'  && \
-#    R -e ', install.packages("remotePARTS", dependencies=TRUE, repos="http://cran.rstudio.com/")'  && \
-
-#RUN Rscript -e install.packages("devtools")  && \
-#    Rscript -e install.packages("remotePARTS")  && \
-
     # Clear installation data
     # apt-get clean && rm -r /var/cache/
 
@@ -50,4 +43,4 @@ ENV HOME /home/docker
 
 WORKDIR /home/docker
 
-# CMD [Rd]
+# CMD [R]
