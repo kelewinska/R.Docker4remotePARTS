@@ -33,7 +33,7 @@ RUN apt-get update && \
   zlib1g-dev \
   cmake
 RUN Rscript -e "install.packages(c('devtools', 'dplyr'))"
-RUN Rscript -e "devtools::install_github("morrowcj/remotePARTS")"
+RUN Rscript -e "devtools::install_github('morrowcj/remotePARTS')"
 
     # Clear installation data
     # apt-get clean && rm -r /var/cache/
