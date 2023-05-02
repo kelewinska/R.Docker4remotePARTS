@@ -4,7 +4,7 @@
 #
 # :Description: A Docker image for a container to run remotePARTS
 #
-# :Updates:
+# :Updates:     2023-05-02: more comprehensive setup to handle bricks for ARfit
 #
 # :2Do:
 #
@@ -23,6 +23,7 @@ RUN apt-get update && \
   libfontconfig1-dev \
   libfreetype6-dev \
   libfribidi-dev \
+  libgdal-dev \
   libharfbuzz-dev \
   libjpeg-dev \
   libpng-dev \
@@ -34,6 +35,8 @@ RUN apt-get update && \
   cmake
 RUN Rscript -e "install.packages(c('devtools', 'dplyr'))"
 RUN Rscript -e "devtools::install_github('morrowcj/remotePARTS')"
+RUN Rscript -e "install.packages(c('snow', 'doParallel', 'foreach', 'graphics'))"
+RUN Rscript -e "install.packages(c('raster', 'data.table', 'rgdal'))"
 
     # Clear installation data
     # apt-get clean && rm -r /var/cache/
