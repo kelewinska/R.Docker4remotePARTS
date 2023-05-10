@@ -4,7 +4,7 @@
 #
 # :Description: A Docker image for a container to run remotePARTS
 #
-# :Updates:     2023-05-02: more comprehensive setup to handle bricks for ARfit
+# :Updates:
 #
 # :2Do:
 #
@@ -14,10 +14,12 @@
 
 FROM r-base:4.2.2
 
+WORKDIR /home/docker
+
 # disable interactive frontends
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && \
+RUN apt-get -y update && apt-get -y upgrade && \
   apt-get install -y \
   libcurl4-openssl-dev \
   libfontconfig1-dev \
@@ -33,17 +35,19 @@ RUN apt-get update && \
   libxml2-dev \
   zlib1g-dev \
   cmake
-RUN Rscript -e "install.packages(c('devtools', 'dplyr'))"
-RUN Rscript -e "devtools::install_github('morrowcj/remotePARTS')"
-RUN Rscript -e "install.packages(c('snow', 'doParallel', 'foreach', 'graphics'))"
-RUN Rscript -e "install.packages(c('raster', 'data.table', 'rgdal'))"
 
+
+RUN Rscript -e "install.packages(c('devtools', 'dplyr'))" && \
+    Rscript -e "devtools::install_github('morrowcj/remotePARTS')" && \
+    Rscript -e "install.packages(c('snow', 'parallel', 'doParallel', 'foreach', 'graphics'))" && \
+    Rscript -e "install.packages(c('raster', 'data.table', 'rgdal'))" && \
     # Clear installation data
-    # apt-get clean && rm -r /var/cache/
+    apt-get clean && rm -r /var/cache/
 
-ENV HOME /home/docker
-# ENV PATH "$PATH:/home/docker/bin"
+USER docker
 
-WORKDIR /home/docker
+# ENV HOME /home/docker
+# ENV PATH /home/docker/bin
 
-# CMD [R]
+# Entry point
+CMD ['Rscript']
