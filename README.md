@@ -19,6 +19,7 @@ docker run -v /data:/data -v /mnt:/mnt -w $PWD -u $(id -u):$(id -g) -it --name r
 
 Use appropriate `--user`, `--volume`, `--workdir` options to define user-specific settings, to mount volumes necessary for the processing, and to define working directory inside the container, respectively.
 Be carefull with using `$PWD` - when used, it makes a container notindependent from the local environment.
-The use of `--cpus` can be desired to limit CPUs use allowed for a container. 
+The use of `--cpus` can be desired to limit CPUs use allowed for a container.
+Or even better `--cpuset-cpus` to indicate the cpus available for a container (their use will be maxed out according to the processing done in a container). 
 
 For a better experience, please add to the docker image R packages essential for your specific workflow(s).
