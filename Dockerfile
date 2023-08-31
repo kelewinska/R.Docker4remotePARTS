@@ -4,7 +4,8 @@
 #
 # :Description: A Docker image for a container to run remotePARTS
 #
-# :Updates:
+# :Updates:     2023-08-31:   exclude libfreetype due to conflict between 2.13.0+dfsg-1 and 2.13.1+dfsg-1 versions
+#                             add 'sf' and 'terra' R packages 
 #
 # :2Do:
 #
@@ -23,7 +24,8 @@ RUN apt-get -y update && apt-get -y upgrade && \
   apt-get install -y \
   libcurl4-openssl-dev \
   libfontconfig1-dev \
-  libfreetype6-dev \
+  # libfreetype-dev (= 2.13.0+dfsg-1) \
+  # libfreetype6-dev \
   libfribidi-dev \
   libgdal-dev \
   libharfbuzz-dev \
@@ -40,7 +42,7 @@ RUN apt-get -y update && apt-get -y upgrade && \
 RUN Rscript -e "install.packages(c('devtools', 'dplyr'))" && \
     Rscript -e "devtools::install_github('morrowcj/remotePARTS')" && \
     Rscript -e "install.packages(c('snow', 'parallel', 'doParallel', 'foreach', 'graphics'))" && \
-    Rscript -e "install.packages(c('raster', 'data.table', 'rgdal'))" && \
+    Rscript -e "install.packages(c('raster', 'sf','terra' 'data.table', 'rgdal'))" && \
     # Clear installation data
     apt-get clean && rm -r /var/cache/
 
