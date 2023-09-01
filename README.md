@@ -3,9 +3,6 @@
 A barebones docker container to run [remotePARTS](https://github.com/morrowcj/remotePARTS).
 
 Copy the docker image from this repo or pull the docker container from the docker hub
-```console
-docker build -t <chosen-name-of-the-image>/rparts:<version-tag>
-```
 
 ```console
 docker pull kelewinska/rparts:latest
