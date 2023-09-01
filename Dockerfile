@@ -4,8 +4,7 @@
 #
 # :Description: A Docker image for a container to run remotePARTS
 #
-# :Updates:     2023-08-31:   exclude libfreetype due to conflict between 2.13.0+dfsg-1 and 2.13.1+dfsg-1 versions
-#                             add 'sf' and 'terra' R packages 
+# :Updates:     2023-08-31:   r-base:4.3.1; add 'sp', 'sf', and 'terra' R packages 
 #
 # :2Do:
 #
@@ -13,7 +12,7 @@
 #               and shall not be liable for any damage caused by these.
 ###########################################################################
 
-FROM r-base:4.2.2
+FROM r-base:4.3.1
 
 WORKDIR /home/docker
 
@@ -24,8 +23,11 @@ RUN apt-get -y update && apt-get -y upgrade && \
   apt-get install -y \
   libcurl4-openssl-dev \
   libfontconfig1-dev \
-  # libfreetype-dev (= 2.13.0+dfsg-1) \
-  # libfreetype6-dev \
+  libfreetype-dev \
+  libfreetype-dev \
+  libudunits2-dev \
+  libgeos-dev \
+  libproj-dev \
   libfribidi-dev \
   libgdal-dev \
   libharfbuzz-dev \
@@ -38,11 +40,13 @@ RUN apt-get -y update && apt-get -y upgrade && \
   zlib1g-dev \
   cmake
 
-
 RUN Rscript -e "install.packages(c('devtools', 'dplyr'))" && \
     Rscript -e "devtools::install_github('morrowcj/remotePARTS')" && \
     Rscript -e "install.packages(c('snow', 'parallel', 'doParallel', 'foreach', 'graphics'))" && \
-    Rscript -e "install.packages(c('raster', 'sf','terra' 'data.table', 'rgdal'))" && \
+
+    Rscript -e "install.packages(c('raster', 'sp', 'terra','data.table', 'rgdal'), dependencies = TRUE, repos = 'https://cloud.r-project.org')" && \
+    Rscript -e "devtools::install_github('r-spatial/sf')" && \
+    
     # Clear installation data
     apt-get clean && rm -r /var/cache/
 
@@ -52,4 +56,4 @@ USER docker
 # ENV PATH /home/docker/bin
 
 # Entry point
-CMD ['Rscript']
+CMD ["Rscript"]
