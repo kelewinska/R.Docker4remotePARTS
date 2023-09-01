@@ -43,8 +43,10 @@ RUN apt-get -y update && apt-get -y upgrade && \
 RUN Rscript -e "install.packages(c('devtools', 'dplyr'))" && \
     Rscript -e "devtools::install_github('morrowcj/remotePARTS')" && \
     Rscript -e "install.packages(c('snow', 'parallel', 'doParallel', 'foreach', 'graphics'))" && \
+
     Rscript -e "install.packages(c('raster', 'sp', 'terra','data.table', 'rgdal'), dependencies = TRUE, repos = 'https://cloud.r-project.org')" && \
     Rscript -e "devtools::install_github('r-spatial/sf')" && \
+    
     # Clear installation data
     apt-get clean && rm -r /var/cache/
 
