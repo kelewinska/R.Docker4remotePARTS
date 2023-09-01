@@ -54,4 +54,4 @@ USER docker
 # ENV PATH /home/docker/bin
 
 # Entry point
-CMD ['Rscript']
+CMD ["Rscript"]
